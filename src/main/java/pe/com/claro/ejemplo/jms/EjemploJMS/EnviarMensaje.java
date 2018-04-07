@@ -2,6 +2,7 @@ package pe.com.claro.ejemplo.jms.EjemploJMS;
 
 import java.util.Hashtable;
 
+import javax.jms.JMSException;
 import javax.jms.ObjectMessage;
 import javax.jms.Queue;
 import javax.jms.QueueConnection;
@@ -24,8 +25,8 @@ public class EnviarMensaje {
 	private QueueReceiver queueReceiver = null;
 	private ObjectMessage objectMessage = null;
 		
-	private String JNDI_QUEUE_CF = "";
-	private String JNDI_QUEUE= "";
+	private String JNDI_QUEUE_CF = "pe.com.claro.cola.ejemplo";
+	private String JNDI_QUEUE= "pe.com.claro.cf.ejemplo";
 	private static final String CONTEXTO = "weblogic.jndi.WLInitialContextFactory";
 	private String URL = "";
 	private String USUARIO = "";
@@ -60,37 +61,37 @@ public class EnviarMensaje {
 	}
 	
 	public void limpiarConexiones(){
-//		try {
-//			if (this.queueSender != null) {
-//				this.queueSender.close();
-//			}
-//			if (this.objQueueReciver != null) {
-//				this.objQueueReciver.close();
-//			}
-//			if (this.objQueueSesion != null) {
-//				this.objQueueSesion.close();
-//			}
-//			if (this.objQueueConexion != null) {
-//				this.objQueueConexion.close();
-//			}
-//
-//			this.objMensaje = null;
-//			this.objQueueSender = null;
-//			this.objQueueReciver = null;
-//			this.objQueue = null;
-//			this.objQueueSesion = null;
-//			this.objQueueConexion = null;
-//			this.objQueueFactory = null;
-//			this.objContexto = null;
-//
-//			System.out.println("- LIMPIANDO CONFIGURACION ...!!!");
-//		} catch (JMSException e) {
-//			System.out.println("Error, JMSException");
-//			e.printStackTrace();
-//		} catch (Exception e) {
-//			System.out.println("Error, Exception");
-//			e.printStackTrace();
-//		}
+		try {
+			if (this.queueSender != null) {
+				this.queueSender.close();
+			}
+			if (this.queueReceiver != null) {
+				this.queueReceiver.close();
+			}
+			if (this.queueSession != null) {
+				this.queueSession.close();
+			}
+			if (this.queueConnection != null) {
+				this.queueConnection.close();
+			}
+
+			this.objectMessage = null;
+			this.queueSender = null;
+			this.queueReceiver = null;
+			this.queue = null;
+			this.queueSession = null;
+			this.queueConnection = null;
+			this.queueConnectionFactory = null;
+			this.context = null;
+
+			System.out.println("- LIMPIANDO CONFIGURACION ...!!!");
+		} catch (JMSException e) {
+			System.out.println("Error, JMSException");
+			e.printStackTrace();
+		} catch (Exception e) {
+			System.out.println("Error, Exception");
+			e.printStackTrace();
+		}
 	}
 	
 
