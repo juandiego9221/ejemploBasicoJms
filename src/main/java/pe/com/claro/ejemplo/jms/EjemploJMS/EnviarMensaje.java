@@ -10,6 +10,7 @@ import javax.jms.QueueConnectionFactory;
 import javax.jms.QueueReceiver;
 import javax.jms.QueueSender;
 import javax.jms.QueueSession;
+import javax.jms.TextMessage;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.Context;
@@ -17,7 +18,7 @@ import javax.naming.Context;
 public class EnviarMensaje {
 	
 	private Context context = null;
-	private QueueConnectionFactory queueConnectionFactory = null;
+	private QueueConnectionFactory queueConnectionFactory = null;	
 	private QueueConnection queueConnection = null;
 	private QueueSession queueSession = null;
 	private Queue queue = null;
@@ -25,12 +26,12 @@ public class EnviarMensaje {
 	private QueueReceiver queueReceiver = null;
 	private ObjectMessage objectMessage = null;
 		
-	private String JNDI_QUEUE_CF = "pe.com.claro.cola.ejemplo";
-	private String JNDI_QUEUE= "pe.com.claro.cf.ejemplo";
+	private String JNDI_QUEUE_CF = "pe.com.claro.ejemplo.cf";
+	private String JNDI_QUEUE= "pe.com.claro.ejemplo.queue";
 	private static final String CONTEXTO = "weblogic.jndi.WLInitialContextFactory";
-	private String URL = "";
-	private String USUARIO = "";
-	private String PASSWORD = "";
+	private String URL = "t3://localhost:7001";
+	private String USUARIO = "weblogic";
+	private String PASSWORD = "weblogic123";
 	
 	public void enviarMensajePuntoAPunto(){
 		
@@ -50,12 +51,15 @@ public class EnviarMensaje {
 			this.queue  = (Queue) this.context.lookup(this.JNDI_QUEUE);
 			this.queueSender = this.queueSession.createSender(queue);
 			
-			this.objectMessage = this.queueSession.createObjectMessage();
-			this.queueSender.send(this.objectMessage);
+			TextMessage textMessage = this.queueSession.createTextMessage();
+			textMessage.setText("Hola Mundo");
+//			this.objectMessage = this.queueSession.createObjectMessage();
+			this.queueSender.send(textMessage);
 			System.out.println("- MENSAJE ENVIADO ...!!!");
 			
 		}catch(Exception e){
-			
+			System.out.println("Excepcion : " + e);
+
 		}
 		
 	}
